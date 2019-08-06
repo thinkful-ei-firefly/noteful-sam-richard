@@ -1,12 +1,16 @@
 import React from "react";
 import Note from "./Note";
 
-const NotePage = (props) => {
-  const note = props.notes.filter(note => note.id === props.match.params.notesid).join('');
+const NotePage = props => {
+  const noteArr = props.notes.filter(
+    note => note.id === props.match.params.notesId
+  );
+  const note = noteArr[0];
+  console.log(note);
   return (
     <div>
-      <Note name={note.name} id={props.id} key={props.id} modified={props.modified}/>
-      <p>{props.content}</p>
+      <Note {...note} />
+      <p>{note.content}</p>
     </div>
   );
 };

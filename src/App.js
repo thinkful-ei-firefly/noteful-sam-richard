@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import FolderList from "./components/FolderList";
 import NoteList from "./components/NoteList";
 import NotePage from "./components/NotePage";
+import NoteSidebar from "./components/NoteSidebar";
 
 import "./App.css";
 
@@ -19,10 +20,18 @@ class App extends Component {
       <div className="App">
         <Header />
         <div className="sidebar">
-          <Route exact path="/notes/:noteId" />
-          <Route
-            render={props => <FolderList folders={folders} {...props} />}
-          />
+          <Switch>
+            <Route
+              exact
+              path="/notes/:noteId"
+              render={props => (
+                <NoteSidebar {...props} folders={folders} notes={notes} />
+              )}
+            />
+            <Route
+              render={props => <FolderList folders={folders} {...props} />}
+            />
+          </Switch>
         </div>
         <div className="main">
           <Switch>
