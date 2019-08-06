@@ -1,8 +1,12 @@
 import React from "react";
 import Folder from "./Folder";
 
-const FolderList = () => {
-  return <div>Folder List</div>;
+const FolderList = (props) => {
+  return (
+    <ul>
+      {props.folders.map(folder => <Folder name={folder.name} id={folder.id} key={folder.id}/>)}
+    </ul>
+  );
 };
 
 export default FolderList;
