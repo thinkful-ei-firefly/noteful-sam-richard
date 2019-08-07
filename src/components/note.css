@@ -12,3 +12,16 @@
   text-decoration: none;
   color: blue;
 }
+
+.note-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete {
+  margin: 15px 0px;
+}
+
+.filler, .delete {
+  width: 10%;
+}

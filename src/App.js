@@ -10,19 +10,37 @@ import UserContext from "./components/UserContext";
 import "./App.css";
 
 class App extends Component {
-  
-  componentDidMount() {
-    console.log('Component Mounted');
-    fetch('http://loacalhost:8080/folders')
-      .then(res => res.json)
-      .then(resJson => console.log(resJson));
-  }
 
   state = {
-    folders: this.props.store.folders,
-    notes: this.props.store.notes
+    folders: [],
+    notes: []
   };
+  
+  componentDidMount() {
+    fetch('http://localhost:9090/db')
+      .then(res => res.json())
+      .then(resJson => {
+        this.setState({
+          folders: resJson.folders,
+          notes: resJson.notes
+        })
+      });
+  }
 
+  handleDelete = (id) => {
+    console.log('deleting '+id)
+    fetch(`http://localhost:9090/notes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(() => {
+        this.setState({
+          notes: this.state.notes.filter(note => note.id !== id)
+        })
+      })
+  }
   
 
   render() {
@@ -64,7 +82,8 @@ class App extends Component {
               render={({match}) =>
                 <UserContext.Provider value ={{
                   notes: notes,
-                  match: match
+                  match: match,
+                  handleDelete: this.handleDelete
                 }}> 
                   <NoteList />
                 </UserContext.Provider>
@@ -76,7 +95,8 @@ class App extends Component {
               render={({match}) => 
                 <UserContext.Provider value ={{
                   notes: notes,
-                  match: match
+                  match: match,
+                  handleDelete: this.handleDelete
                 }}> 
                   <NoteList />
                 </UserContext.Provider>
@@ -88,7 +108,8 @@ class App extends Component {
               render={({match}) => 
                 <UserContext.Provider value ={{
                   notes: notes,
-                  match: match
+                  match: match,
+                  handleDelete: this.handleDelete
                 }}> 
                   <NotePage />
                 </UserContext.Provider>
