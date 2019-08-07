@@ -10,7 +10,7 @@ import UserContext from './UserContext';
       note => note.id === this.context.match.params.notesId
     );
     const note = noteArr[0];
-    return (
+    return !note ? <h2>No note with this ID</h2> :  (
       <div>
         <Note {...note} />
         <p>{note.content}</p>

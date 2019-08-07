@@ -13,7 +13,8 @@ class App extends Component {
 
   state = {
     folders: [],
-    notes: []
+    notes: [],
+    loading: true
   };
   
   componentDidMount() {
@@ -22,7 +23,8 @@ class App extends Component {
       .then(resJson => {
         this.setState({
           folders: resJson.folders,
-          notes: resJson.notes
+          notes: resJson.notes,
+          loading: false
         })
       });
   }
@@ -44,35 +46,31 @@ class App extends Component {
   
 
   render() {
-    const { folders, notes } = this.state;
+    const { folders, notes, loading } = this.state;
+    if (loading) return <div>loading</div>
     return (
       <div className="App">
         <Header />
         <div className="sidebar">
+        <UserContext.Provider value ={{
+          folders: folders,
+          notes: notes,
+        }}>
           <Switch>
             <Route
               exact
               path="/notes/:noteId"
               render={({ match }) => (
-                <UserContext.Provider value ={{
-                  folders: folders,
-                  notes: notes,
-                  match: match
-                }}>
-                  <NoteSidebar />
-                </UserContext.Provider>
+                  <NoteSidebar match={match}/>
               )}
             />
             <Route
               render={() => (
-                <UserContext.Provider value ={{
-                  folders: folders
-                }}>
                   <FolderList />
-                </UserContext.Provider>
               )}
             />
           </Switch>
+        </UserContext.Provider>
         </div>
         <div className="main">
           <Switch>
