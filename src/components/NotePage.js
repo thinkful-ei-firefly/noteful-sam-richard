@@ -1,18 +1,23 @@
 import React from "react";
 import Note from "./Note";
+import UserContext from './UserContext';
 
-const NotePage = props => {
-  const noteArr = props.notes.filter(
-    note => note.id === props.match.params.notesId
-  );
-  const note = noteArr[0];
-  console.log(note);
-  return (
-    <div>
-      <Note {...note} />
-      <p>{note.content}</p>
-    </div>
-  );
+ class NotePage extends React.Component{
+  static contextType = UserContext;
+
+  render () {
+    const noteArr = this.context.notes.filter(
+      note => note.id === this.context.match.params.notesId
+    );
+    const note = noteArr[0];
+    return (
+      <div>
+        <Note {...note} />
+        <p>{note.content}</p>
+      </div>
+    );
+  }
+  
 };
 
 export default NotePage;

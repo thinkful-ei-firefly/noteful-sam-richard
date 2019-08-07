@@ -10,6 +10,14 @@ import UserContext from "./components/UserContext";
 import "./App.css";
 
 class App extends Component {
+  
+  componentDidMount() {
+    console.log('Component Mounted');
+    fetch('http://loacalhost:8080/folders')
+      .then(res => res.json)
+      .then(resJson => console.log(resJson));
+  }
+
   state = {
     folders: this.props.store.folders,
     notes: this.props.store.notes
@@ -53,17 +61,38 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => <NoteList {...props} notes={notes} />}
+              render={({match}) =>
+                <UserContext.Provider value ={{
+                  notes: notes,
+                  match: match
+                }}> 
+                  <NoteList />
+                </UserContext.Provider>
+              }  
             />
             <Route
               exact
               path="/folders/:folderId"
-              render={props => <NoteList {...props} notes={notes} />}
+              render={({match}) => 
+                <UserContext.Provider value ={{
+                  notes: notes,
+                  match: match
+                }}> 
+                  <NoteList />
+                </UserContext.Provider>
+              }
             />
             <Route
               exact
               path="/notes/:notesId"
-              render={props => <NotePage {...props} notes={notes} />}
+              render={({match}) => 
+                <UserContext.Provider value ={{
+                  notes: notes,
+                  match: match
+                }}> 
+                  <NotePage />
+                </UserContext.Provider>
+              }
             />
           </Switch>
         </div>
