@@ -5,6 +5,7 @@ import FolderList from "./components/FolderList";
 import NoteList from "./components/NoteList";
 import NotePage from "./components/NotePage";
 import NoteSidebar from "./components/NoteSidebar";
+import UserContext from "./components/UserContext";
 
 import "./App.css";
 
@@ -13,6 +14,8 @@ class App extends Component {
     folders: this.props.store.folders,
     notes: this.props.store.notes
   };
+
+  
 
   render() {
     const { folders, notes } = this.state;
@@ -24,12 +27,24 @@ class App extends Component {
             <Route
               exact
               path="/notes/:noteId"
-              render={props => (
-                <NoteSidebar {...props} folders={folders} notes={notes} />
+              render={({ match }) => (
+                <UserContext.Provider value ={{
+                  folders: folders,
+                  notes: notes,
+                  match: match
+                }}>
+                  <NoteSidebar />
+                </UserContext.Provider>
               )}
             />
             <Route
-              render={props => <FolderList folders={folders} {...props} />}
+              render={() => (
+                <UserContext.Provider value ={{
+                  folders: folders
+                }}>
+                  <FolderList />
+                </UserContext.Provider>
+              )}
             />
           </Switch>
         </div>

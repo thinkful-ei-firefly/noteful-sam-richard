@@ -1,14 +1,19 @@
 import React from "react";
 import Folder from "./Folder";
+import UserContext from "./UserContext"
 
-const FolderList = props => {
-  return (
-    <ul className="folder-list">
-      {props.folders.map(folder => (
-        <Folder name={folder.name} id={folder.id} key={folder.id} />
-      ))}
-    </ul>
-  );
+class FolderList extends React.Component {
+  static contextType = UserContext;
+  render() {
+    const { folders } =this.context;
+    return (
+      <ul className="folder-list">
+        {folders.map(folder => (
+          <Folder name={folder.name} id={folder.id} key={folder.id} />
+        ))}
+      </ul>
+    );
+  }
 };
 
 export default FolderList;
